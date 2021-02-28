@@ -5,15 +5,15 @@ from .locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
-    def pruduct_successfully_added_to_basket(self):
+    def product_successfully_added_to_basket(self):
         productName = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
         basket_button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
         basket_button.click()
-        self.solve_quiz_and_get_code()
+        #self.solve_quiz_and_get_code()
         productNameInBasket = self.browser.find_element(*ProductPageLocators.ADDED_PRODUCT_NAME).text
         assert productName == productNameInBasket, "Наименования товара в корзине не совпадает с ожидаемым"
 
-    def busket_price_equal_goods_price(self):
+    def basket_price_equal_goods_price(self):
         productPrice = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE_SITE).text
         productPriceInBusket = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE_IN_BUSKET).text
         print(f"{productPrice}\n {productPriceInBusket}")
@@ -33,3 +33,16 @@ class ProductPage(BasePage):
             alert.accept()
         except NoAlertPresentException:
             print("No second alert presented")
+
+    def add_to_basket(self):
+        basket_button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
+        basket_button.click()
+
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+           "Success message is presented, but should not be"
+
+    def should_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+           "Success message is not presented, but should be"
